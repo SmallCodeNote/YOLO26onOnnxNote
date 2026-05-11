@@ -25,12 +25,13 @@ from inference_engine import InferenceEngine
 import cv2
 import numpy as np
 
+SETTINGS_FILE = "setting_onnx_predictor.json"
 
 class OnnxPredictorGUI(QWidget):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("ONNX Predictor (YOLO Pose / DirectML)")
-        self.config = ConfigManager()
+        self.config = ConfigManager(SETTINGS_FILE)
 
         self.engine: InferenceEngine | None = None
 

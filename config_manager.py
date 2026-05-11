@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict
 
-CONFIG_FILE_NAME = "settingOnnxPredictor.json"
+CONFIG_FILE_NAME = "setting.json"
 
 
 class ConfigManager:

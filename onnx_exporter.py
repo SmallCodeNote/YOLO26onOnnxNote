@@ -19,7 +19,7 @@ from PySide6.QtCore import Qt
 
 # --- Configuration File Management Class ---
 
-SETTINGS_FILE = "settingOnnxExporter.json"
+SETTINGS_FILE = "setting_onnx_exporter.json"
 DEFAULT_CONFIG = {
     "export_dir": "",  # Initial value is determined automatically upon setting
     "model_name": "yolov8", # Default model name
