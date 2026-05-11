@@ -6,8 +6,8 @@ from typing import List, Tuple
 
 import cv2
 import numpy as np
-from PoseKeyPoints import PoseKeyPoints
-from PoseInfo import PoseInfo, PoseInfo_ConfidenceLevel
+from pose_key_points import PoseKeyPoints
+from pose_info import PoseInfo, PoseInfo_ConfidenceLevel
 
 try:
     # Attempt to import onnxruntime for model inference
@@ -45,6 +45,9 @@ class InferenceEngine:
         Creates and returns an ONNX Runtime inference session.
         Prioritizes DirectML if available for GPU acceleration.
         """
+        if ort is None:
+            raise ImportError("onnxruntime is not installed or failed to import.")
+        
         providers = []
         # Prefer DirectML if available (for Windows/DirectX accelerated hardware)
         if "DmlExecutionProvider" in (ort.get_available_providers() if ort else []):
@@ -133,16 +136,19 @@ class InferenceEngine:
 
         return dets_scaled
 
-    def infer(self, img_bgr: np.ndarray) -> Tuple[np.ndarray, float, float]:
+    def infer(self, img_bgr: np.ndarray) -> Tuple[np.ndarray, float, float, int, int]:
+        input_tensor, sx, sy, pad_x, pad_y = self.preprocess_image(img_bgr)
         """
         Runs the inference process on a single BGR image.
         Returns: raw output (1, 300, 57), scale_x, scale_y, pad_x, pad_y
         (Note: The original code returned only sx and sy in the type hint but used all four values internally).
         """
-        input_tensor, sx, sy, pad_x, pad_y = self.preprocess_image(img_bgr)
         # Run the session with the input tensor
         outputs = self.session.run([self.output_name], {self.input_name: input_tensor})
-        return outputs[0], sx, sy, pad_x, pad_y
+        result_array = outputs[0]
+        if not isinstance(result_array, np.ndarray):
+            raise TypeError("Output is not a numpy array")
+        return result_array, sx, sy, pad_x, pad_y
 
 
     @staticmethod
@@ -338,7 +344,7 @@ class InferenceEngine:
 
         out_video_path = result_dir_image / f"{video_path.stem}_draw.mp4"
         # Define video writer codec and initialize the VideoWriter object
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        fourcc = cv2.VideoWriter.fourcc(*"mp4v")
         writer = cv2.VideoWriter(str(out_video_path), fourcc, fps, (width, height))
 
         csv_path = result_dir_csv / f"{video_path.stem}.csv"

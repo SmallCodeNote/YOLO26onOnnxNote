@@ -4,7 +4,7 @@ from typing import List
 import math
 import numpy as np
 
-from PoseKeyPoints import PoseKeyPoints
+from pose_key_points import PoseKeyPoints
 
 
 # ---------------------------------------------------------
