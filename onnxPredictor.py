@@ -57,7 +57,7 @@ class OnnxPredictorGUI(QWidget):
         self.button_browse_result_image_dir = QPushButton("Browse...")
         self.button_browse_result_csv_dir = QPushButton("Browse...")
 
-        self.horizontalSlider_scoreThValue = QSlider(Qt.Horizontal)
+        self.horizontalSlider_scoreThValue = QSlider(Qt.Orientation.Horizontal)
         self.horizontalSlider_scoreThValue.setMinimum(0)
         self.horizontalSlider_scoreThValue.setMaximum(1000)
         self.horizontalSlider_scoreThValue.setSingleStep(1)
@@ -73,9 +73,9 @@ class OnnxPredictorGUI(QWidget):
 
         self.pictureBox_resultImage = QLabel()
         self.pictureBox_resultImage.setText("Result Image Preview")
-        self.pictureBox_resultImage.setAlignment(Qt.AlignCenter)
+        self.pictureBox_resultImage.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.pictureBox_resultImage.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
         )
         self.pictureBox_resultImage.setMinimumHeight(240)
 
@@ -301,8 +301,8 @@ class OnnxPredictorGUI(QWidget):
         ).scaled(
             self.pictureBox_resultImage.width(),
             self.pictureBox_resultImage.height(),
-            Qt.KeepAspectRatio,
-            Qt.SmoothTransformation,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
         )
         self.pictureBox_resultImage.setPixmap(qimg)
 
@@ -313,7 +313,7 @@ class OnnxPredictorGUI(QWidget):
         h, w, ch = img_rgb.shape
         bytes_per_line = ch * w
         return QImage(
-            img_rgb.data, w, h, bytes_per_line, QImage.Format_RGB888
+            img_rgb.data, w, h, bytes_per_line, QImage.Format.Format_RGB888
         ).copy()
 
 

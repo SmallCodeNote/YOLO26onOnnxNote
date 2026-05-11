@@ -19,7 +19,7 @@ from PySide6.QtCore import Qt
 
 # --- Configuration File Management Class ---
 
-SETTINGS_FILE = "setting.json"
+SETTINGS_FILE = "settingOnnxExporter.json"
 DEFAULT_CONFIG = {
     "export_dir": "",  # Initial value is determined automatically upon setting
     "model_name": "yolov8", # Default model name
@@ -27,7 +27,7 @@ DEFAULT_CONFIG = {
 }
 
 def load_settings():
-    """Loads settings from setting.json. Returns default values if the file does not exist."""
+    """Loads settings from setting file. Returns default values if the file does not exist."""
     try:
         with open(SETTINGS_FILE, 'r', encoding='utf-8') as f:
             print(f"Settings loaded from {SETTINGS_FILE}")
